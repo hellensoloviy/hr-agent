@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alex — HR Assistant</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="avatar">🤝</div>
+      <div>
+        <h1>Alex — HR Assistant</h1>
+        <p>TechCorp Recruiting Platform</p>
+      </div>
+    </div>
+    <div class="status">
+      <div class="status-dot"></div>
+      Online
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="chat-panel">
+      <div class="messages" id="messages">
+        <div class="welcome" id="welcome">
+          <div class="big-avatar">🤝</div>
+          <h2>Hi, I'm Alex</h2>
+          <p>Your HR assistant at TechCorp.<br>I can help you manage candidates and schedule interviews.</p>
+          <div class="suggestions">
+            <div class="suggestion" data-message="What positions are open?" onclick="sendSuggestion(this)">What positions are open?</div>
+            <div class="suggestion" data-message="Show me all candidates" onclick="sendSuggestion(this)">Show me all candidates</div>
+            <div class="suggestion" data-message="Who is in the final round?" onclick="sendSuggestion(this)">Who's in the final round?</div>
+            <div class="suggestion" data-message="What slots are available on 2026-06-11?" onclick="sendSuggestion(this)">Available slots June 11th</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="input-area">
+        <div class="input-row">
+          <textarea id="input"
+            placeholder="Ask about candidates, positions, or scheduling..."
+            rows="1"
+            onkeydown="handleKey(event)"
+            oninput="autoResize(this)"></textarea>
+          <button class="send-btn" id="send-btn" onclick="sendMessage()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-label">Overview</div>
+        <div class="stats">
+          <div class="stat"><div class="stat-num">3</div><div class="stat-label">Positions</div></div>
+          <div class="stat"><div class="stat-num">3</div><div class="stat-label">Candidates</div></div>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-label">Quick actions</div>
+        <div class="sidebar-suggestions">
+          <button class="sidebar-suggestion" data-message="List all open positions" onclick="sendSuggestion(this)">📋 List open positions</button>
+          <button class="sidebar-suggestion" data-message="Show all candidates" onclick="sendSuggestion(this)">👥 Show all candidates</button>
+          <button class="sidebar-suggestion" data-message="Who is in the final round?" onclick="sendSuggestion(this)">🏆 Final round candidates</button>
+          <button class="sidebar-suggestion" data-message="What slots are available on 2026-06-11?" onclick="sendSuggestion(this)">📅 Check June 11 slots</button>
+          <button class="sidebar-suggestion" data-message="List upcoming interviews" onclick="sendSuggestion(this)">📊 Upcoming interviews</button>
+          <button class="sidebar-suggestion" data-message="reset" onclick="resetChat()" style="color: #ef4444; border-color: #ef444430;">🗑 Clear conversation</button>
+        </div>
+      </div>
+
+      <div class="sidebar-section" style="flex:1; display:flex; flex-direction:column; min-height: 0;">
+        <div class="sidebar-label">Tool activity</div>
+        <div class="tool-log" id="tool-log"><span class="tool-log-empty">Tool calls will appear here...</span></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

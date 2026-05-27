@@ -2,7 +2,7 @@ import json
 from datetime import datetime
 from pathlib import Path
 
-DATA_DIR = Path("data")
+DATA_DIR = Path(__file__).parent.parent / "data"
 
 
 def load_json(filename: str) -> dict:
@@ -29,7 +29,6 @@ def get_candidate(query: str) -> dict:
     for candidate in data["candidates"]:
         if candidate["id"].lower() == query_lower or candidate["name"].lower() == query_lower:
             return {"found": True, "candidate": candidate}
-    # Try partial name match
     for candidate in data["candidates"]:
         if query_lower in candidate["name"].lower():
             return {"found": True, "candidate": candidate}
@@ -57,21 +56,13 @@ def get_available_slots(date: str) -> dict:
 def book_interview(candidate_id: str, date: str, time: str) -> dict:
     calendar = load_json("calendar.json")
     candidates = load_json("candidates.json")
-    
-    # Find candidate
     candidate = next((c for c in candidates["candidates"] if c["id"] == candidate_id), None)
     if not candidate:
         return {"success": False, "message": f"Candidate {candidate_id} not found"}
-    
-    # Check slot availability
     available = calendar["available_slots"].get(date, [])
     if time not in available:
         return {"success": False, "message": f"Slot {time} on {date} is not available"}
-    
-    # Remove slot from available
     calendar["available_slots"][date].remove(time)
-    
-    # Create booking
     booking = {
         "id": f"B{len(calendar['bookings']) + 1:03d}",
         "candidate_id": candidate_id,
@@ -83,12 +74,7 @@ def book_interview(candidate_id: str, date: str, time: str) -> dict:
     }
     calendar["bookings"].append(booking)
     save_json("calendar.json", calendar)
-    
-    return {
-        "success": True,
-        "booking": booking,
-        "message": f"Interview booked: {candidate['name']} on {date} at {time}"
-    }
+    return {"success": True, "booking": booking, "message": f"Interview booked: {candidate['name']} on {date} at {time}"}
 
 
 def update_candidate_notes(candidate_id: str, notes: str) -> dict:
@@ -101,8 +87,15 @@ def update_candidate_notes(candidate_id: str, notes: str) -> dict:
     return {"success": False, "message": f"Candidate {candidate_id} not found"}
 
 
+def list_upcoming_interviews(date: str = None) -> dict:
+    data = load_json("calendar.json")
+    bookings = data["bookings"]
+    if date:
+        bookings = [b for b in bookings if b["date"] == date]
+    return {"count": len(bookings), "interviews": sorted(bookings, key=lambda b: (b["date"], b["time"]))}
+
+
 def run_tool(tool_name: str, tool_input: dict) -> str:
-    """Dispatches tool call to the right function."""
     dispatch = {
         "list_open_positions": list_open_positions,
         "get_candidate": get_candidate,
@@ -110,18 +103,9 @@ def run_tool(tool_name: str, tool_input: dict) -> str:
         "get_available_slots": get_available_slots,
         "book_interview": book_interview,
         "update_candidate_notes": update_candidate_notes,
-        "list_upcoming_interviews": list_upcoming_interviews
+        "list_upcoming_interviews": list_upcoming_interviews,
     }
     func = dispatch.get(tool_name)
     if not func:
         return json.dumps({"error": f"Unknown tool: {tool_name}"})
-    result = func(**tool_input)
-    return json.dumps(result)
-
-def list_upcoming_interviews(date: str = None) -> dict:
-    data = load_json("calendar.json")
-    bookings = data["bookings"]
-    if date:
-        bookings = [b for b in bookings if b["date"] == date]
-    bookings_sorted = sorted(bookings, key=lambda b: (b["date"], b["time"]))
-    return {"count": len(bookings_sorted), "interviews": bookings_sorted}
+    return json.dumps(func(**tool_input))
