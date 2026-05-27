@@ -22,6 +22,7 @@ httpcore==1.0.9
 httpx==0.28.1
 huggingface_hub==1.16.4
 idna==3.16
+iniconfig==2.3.0
 itsdangerous==2.2.0
 Jinja2==3.1.6
 jiter==0.15.0
@@ -33,10 +34,12 @@ orjson==3.11.9
 packaging==26.2
 pandas==3.0.3
 pillow==12.2.0
+pluggy==1.6.0
 pydantic==2.13.4
 pydantic_core==2.46.4
 pydub==0.25.1
 Pygments==2.20.0
+pytest==9.0.3
 python-dateutil==2.9.0.post0
 python-dotenv==1.2.2
 python-multipart==0.0.29
