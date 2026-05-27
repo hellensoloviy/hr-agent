@@ -1,0 +1,31 @@
+{
+    "positions": [
+      {
+        "id": "P001",
+        "title": "Senior iOS Developer",
+        "department": "Mobile",
+        "level": "Senior",
+        "status": "open",
+        "description": "5+ years Swift/UIKit, experience with SwiftUI preferred",
+        "salary_range": "$140k–$180k"
+      },
+      {
+        "id": "P002",
+        "title": "AI/ML Engineer",
+        "department": "Platform",
+        "level": "Mid-Senior",
+        "status": "open",
+        "description": "Python, LLMs, experience with agent frameworks",
+        "salary_range": "$150k–$190k"
+      },
+      {
+        "id": "P003",
+        "title": "Backend Engineer",
+        "department": "Infrastructure",
+        "level": "Mid",
+        "status": "open",
+        "description": "Python or Go, distributed systems, 3+ years experience",
+        "salary_range": "$130k–$160k"
+      }
+    ]
+  }
