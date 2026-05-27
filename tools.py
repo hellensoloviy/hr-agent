@@ -98,5 +98,20 @@ TOOLS = [
             },
             "required": ["candidate_id", "notes"]
         }
+    },
+    {
+        "name": "list_upcoming_interviews",
+        "description": "Shows all upcoming booked interviews, optionally filtered by date.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "date": {
+                    "type": "string",
+                    "description": "Optional: filter to a specific date in YYYY-MM-DD format"
+                }
+            },
+            "required": []
+        }
     }
+
 ]

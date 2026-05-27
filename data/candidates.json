@@ -1,28 +1,28 @@
 {
-    "candidates": [
-      {
-        "id": "C001",
-        "name": "Alice Chen",
-        "email": "alice.chen@email.com",
-        "applying_for": "P002",
-        "stage": "technical_screen",
-        "notes": "Strong Python background, has worked on RAG systems"
-      },
-      {
-        "id": "C002",
-        "name": "Bob Martinez",
-        "email": "bob.m@email.com",
-        "applying_for": "P001",
-        "stage": "initial_screen",
-        "notes": "7 years iOS, previously at a fintech startup"
-      },
-      {
-        "id": "C003",
-        "name": "Sarah Kim",
-        "email": "sarah.kim@email.com",
-        "applying_for": "P002",
-        "stage": "final_round",
-        "notes": "PhD in ML, published papers on LLM alignment"
-      }
-    ]
-  }
+  "candidates": [
+    {
+      "id": "C001",
+      "name": "Alice Chen",
+      "email": "alice.chen@email.com",
+      "applying_for": "P002",
+      "stage": "technical_screen",
+      "notes": "Strong Python background, has worked on RAG systems. Excellent communication skills."
+    },
+    {
+      "id": "C002",
+      "name": "Bob Martinez",
+      "email": "bob.m@email.com",
+      "applying_for": "P001",
+      "stage": "initial_screen",
+      "notes": "7 years iOS, previously at a fintech startup"
+    },
+    {
+      "id": "C003",
+      "name": "Sarah Kim",
+      "email": "sarah.kim@email.com",
+      "applying_for": "P002",
+      "stage": "final_round",
+      "notes": "PhD in ML, published papers on LLM alignment"
+    }
+  ]
+}

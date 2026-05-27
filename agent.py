@@ -1,6 +1,10 @@
 import anthropic
+import time
 from tools import TOOLS
 from handlers import run_tool
+from dotenv import load_dotenv
+
+load_dotenv()
 
 client = anthropic.Anthropic()
 
@@ -24,6 +28,7 @@ When showing lists, format them clearly for easy reading."""
 def run_agent_turn(user_message: str, history: list) -> tuple[str, list]:
     """Process one user turn and return the response + updated history."""
     
+    history = trim_history(history)
     history.append({"role": "user", "content": user_message})
     
     while True:
@@ -56,3 +61,34 @@ def run_agent_turn(user_message: str, history: list) -> tuple[str, list]:
                     })
             
             history.append({"role": "user", "content": tool_results})
+
+# Trim to avoid hitting the context window limit
+def trim_history(history: list, max_turns: int = 20) -> list:
+    """
+    Keep only the most recent N user/assistant turn pairs.
+    Always preserve the first message for context anchoring.
+    """
+    if len(history) <= max_turns * 2:
+        return history
+    
+    # Keep first exchange + last (max_turns - 1) exchanges
+    first_two = history[:2]
+    recent = history[-(max_turns - 1) * 2:]
+    return first_two + recent
+
+
+# - Function Re-try 
+def call_claude_with_retry(client, max_retries=3, **kwargs):
+    """Call Claude API with exponential backoff on rate limits."""
+    for attempt in range(max_retries):
+        try:
+            return client.messages.create(**kwargs)
+        except anthropic.RateLimitError:
+            if attempt == max_retries - 1:
+                raise
+            wait = 2 ** attempt  # 1s, 2s, 4s
+            print(f"  Rate limited. Retrying in {wait}s...")
+            time.sleep(wait)
+        except anthropic.APIError as e:
+            print(f"  API error: {e}")
+            raise

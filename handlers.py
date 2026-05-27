@@ -110,9 +110,18 @@ def run_tool(tool_name: str, tool_input: dict) -> str:
         "get_available_slots": get_available_slots,
         "book_interview": book_interview,
         "update_candidate_notes": update_candidate_notes,
+        "list_upcoming_interviews": list_upcoming_interviews
     }
     func = dispatch.get(tool_name)
     if not func:
         return json.dumps({"error": f"Unknown tool: {tool_name}"})
     result = func(**tool_input)
     return json.dumps(result)
+
+def list_upcoming_interviews(date: str = None) -> dict:
+    data = load_json("calendar.json")
+    bookings = data["bookings"]
+    if date:
+        bookings = [b for b in bookings if b["date"] == date]
+    bookings_sorted = sorted(bookings, key=lambda b: (b["date"], b["time"]))
+    return {"count": len(bookings_sorted), "interviews": bookings_sorted}
